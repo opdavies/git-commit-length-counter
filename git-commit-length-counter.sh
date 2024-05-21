@@ -27,7 +27,7 @@ if [[ ! -f "${result_file}" ]]; then
 
     # Calculate the legnth of the commit message.
     commit_message=$(GIT_PAGER=cat git -C "${REPO}" show "${commit_id}" -s --format=%B)
-    commit_message_length=$(echo "${commit_message}" | wc -l)
+    commit_message_length=$(echo "${commit_message}" | wc --chars)
 
     # Store the commit IDs and the message length.
     echo "${commit_message_length} ${commit_id}" >> "${result_file}"
