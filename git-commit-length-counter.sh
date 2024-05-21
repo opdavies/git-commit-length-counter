@@ -12,7 +12,13 @@ REPO="${REPO:-$(pwd)}"
 # Return early if the repository directory doesn't exist.
 [[ ! -d "${REPO}" ]] && exit 2
 
-result_file="./result"
+mkdir -p ./result
+
+repo_hash="$(echo -n "${REPO}" | md5sum | cut -d ' ' -f1)"
+result_file="./result/${repo_hash}"
+
+echo "Result file: ${result_file}"
+
 if [[ ! -f "${result_file}" ]]; then
   for commit_id in $(git -C "${REPO}" rev-list --all --no-merges); do
       echo "Processing commit ${commit_id}..."
