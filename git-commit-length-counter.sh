@@ -25,7 +25,7 @@ if [[ ! -f "${result_file}" ]]; then
   for commit_id in $(git -C "${REPO}" rev-list --all --no-merges); do
     echo "Processing commit ${commit_id}..."
 
-    # Calculate the legnth of the commit message.
+    # Calculate the length of the commit message.
     commit_message=$(GIT_PAGER=cat git -C "${REPO}" show "${commit_id}" -s --format=%B)
     commit_message_length=$(echo "${commit_message}" | wc --chars)
 
