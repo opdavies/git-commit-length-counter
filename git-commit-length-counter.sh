@@ -14,20 +14,23 @@ REPO="${REPO:-$(pwd)}"
 
 mkdir -p ./result
 
+# Create a unique result file name based on the repository path.
 repo_hash="$(echo -n "${REPO}" | md5sum | cut -d ' ' -f1)"
 result_file="./result/${repo_hash}"
 
 echo "Result file: ${result_file}"
 
+# If there is no result file for this repository, parse its commits and create one.
 if [[ ! -f "${result_file}" ]]; then
   for commit_id in $(git -C "${REPO}" rev-list --all --no-merges); do
-      echo "Processing commit ${commit_id}..."
-      # Calculate the legnth of the commit message.
-      commit_message=$(GIT_PAGER=cat git -C "${REPO}" show "${commit_id}" -s --format=%B)
-      commit_message_length=$(echo "${commit_message}" | wc -l)
+    echo "Processing commit ${commit_id}..."
 
-      # Store the commit IDs and the message length.
-      echo "${commit_message_length} ${commit_id}" >> "${result_file}"
+    # Calculate the legnth of the commit message.
+    commit_message=$(GIT_PAGER=cat git -C "${REPO}" show "${commit_id}" -s --format=%B)
+    commit_message_length=$(echo "${commit_message}" | wc -l)
+
+    # Store the commit IDs and the message length.
+    echo "${commit_message_length} ${commit_id}" >> "${result_file}"
   done
 fi
 
